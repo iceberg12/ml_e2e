@@ -1,4 +1,5 @@
 catboost
+dill
 lightgbm
 matplotlib
 numpy
