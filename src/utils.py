@@ -7,6 +7,15 @@ from src.logger import logging
 from src.exception import CustomException
 
 
+def exception_handler(func):
+    def handle(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logging.error(CustomException(e, sys))
+            raise
+    return handle
+
 def save_object(file_path, obj):
     try:
         dir_path = os.path.dirname(file_path)

@@ -6,6 +6,8 @@ import pandas as pd
 
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+from src.utils import exception_handler
+
 
 @dataclass
 class DataIngestionConfig:
@@ -20,23 +22,22 @@ class DataIngestion:
         # os.makedirs(self.ingestion_config.train_data_path, exist_ok=True)
         # os.makedirs(self.ingestion_config.test_data_path, exist_ok=True)
 
+    @exception_handler
     def init_data_ingestion(self):
         logging.info('Enter data ingestion')
-        try:
-            df = pd.read_csv('notebook/data/stud.csv')
-            train_df, test_df = train_test_split(df, test_size=0.2, random_state=12)
 
-            df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
-            train_df.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
-            test_df.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
+        df = pd.read_csv('notebook/data/stud.csv')
+        train_df, test_df = train_test_split(df, test_size=0.2, random_state=12)
 
-            logging.info('Ingestion is completed.')
+        df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
+        train_df.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
+        test_df.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
 
-            return (self.ingestion_config.train_data_path,
-                    self.ingestion_config.test_data_path)
-        except Exception as e:
-            logging.error(CustomException(e, sys))
-            raise
+        logging.info('Ingestion is completed.')
+
+        return (self.ingestion_config.train_data_path,
+                self.ingestion_config.test_data_path)
+
 
 if __name__ == '__main__':
     obj = DataIngestion()
